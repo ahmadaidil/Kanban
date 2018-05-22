@@ -4,13 +4,15 @@
       <div class="panel-heading">{{ name }}</div>
       <div class="panel-body">
         <draggable class="drag" v-model="notes" :options="{group:'kanban'}" @start="drag=true" @end="drag=false">
-          <div :class="`alert alert-${className} pointer-cursor`" v-for="(note, index ) in notes" :key="index">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <div :class="`alert alert-${className} pointer-cursor`" v-for="([key, note]) in Object.entries(data)" :key="key">
+            <a href="#" class="close" @click="deleteNote(key)">&times;</a>
             {{note}}
             </div>
         </draggable>
       </div>
-      <div class="panel-footer"><a data-toggle="modal" data-target="#myModal" class="btn btn-secondary" @click='changeType(type)'>Add Sticky Note</a></div>
+      <div class="panel-footer">
+        <a data-toggle="modal" data-target="#myModal" class="btn btn-secondary" @click='changeType(type)'>Add Sticky Note</a>
+      </div>
     </div>
   </div>
 </template>
@@ -23,7 +25,7 @@ export default {
     draggable
   },
   props: {
-    data: Array,
+    data: [Array, Object],
     name: String,
     type: String,
     className: String,
@@ -32,11 +34,16 @@ export default {
   computed: {
     notes: {
       get () {
-        return this.data
+        return Object.values(this.data)
       },
       set (value) {
         this[`$${this.type}`].set({...value})
       }
+    }
+  },
+  methods: {
+    deleteNote (key) {
+      this[`$${this.type}`].child(key).remove()
     }
   }
 }

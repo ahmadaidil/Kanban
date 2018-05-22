@@ -49,8 +49,8 @@ export default {
     getNotes () {
       ['todo', 'ongoing', 'done'].forEach(task => {
         this[`$${task}`].on('value', response => {
-          if (response.val() === null) this[task] = []
-          else this[task] = Object.values(response.val())
+          if (response.val() === null) this[task] = {}
+          else this[task] = response.val()
         })
       })
     },
