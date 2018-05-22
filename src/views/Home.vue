@@ -46,10 +46,17 @@ export default {
     type: ''
   }),
   methods: {
-    addNote (type) {
-      this[type].push({
-        note: this.note
+    getNotes () {
+      ['todo', 'ongoing', 'done'].forEach(task => {
+        this[`$${task}`].on('value', response => {
+          if (response.val() === null) this[task] = []
+          else this[task] = Object.values(response.val())
+        })
       })
+    },
+    addNote (type) {
+      // this[type].push(this.note)
+      this[`$${type}`].push(this.note)
       this.note = ''
       this.type = ''
     },
@@ -59,6 +66,9 @@ export default {
     onChangeNote (newNote) {
       this.note = newNote
     }
+  },
+  mounted () {
+    this.getNotes()
   }
 }
 </script>

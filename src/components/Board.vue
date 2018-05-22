@@ -3,8 +3,8 @@
     <div :class="`panel panel-${className}`">
       <div class="panel-heading">{{ name }}</div>
       <div class="panel-body">
-        <draggable class="drag" v-model="data" :options="{group:'kanban'}" @start="drag=true" @end="drag=false">
-          <div :class="`alert alert-${className} pointer-cursor`" v-for="({ note }, index ) in data" :key="index">
+        <draggable class="drag" v-model="notes" :options="{group:'kanban'}" @start="drag=true" @end="drag=false">
+          <div :class="`alert alert-${className} pointer-cursor`" v-for="(note, index ) in notes" :key="index">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             {{note}}
             </div>
@@ -28,6 +28,16 @@ export default {
     type: String,
     className: String,
     changeType: Function
+  },
+  computed: {
+    notes: {
+      get () {
+        return this.data
+      },
+      set (value) {
+        this[`$${this.type}`].set({...value})
+      }
+    }
   }
 }
 </script>
