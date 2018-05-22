@@ -39,9 +39,9 @@ export default {
     Modal
   },
   data: () => ({
-    todo: [],
-    ongoing: [],
-    done: [],
+    todo: {},
+    ongoing: {},
+    done: {},
     note: '',
     type: ''
   }),
